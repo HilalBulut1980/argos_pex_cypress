@@ -1,0 +1,39 @@
+name: Cypress visual tests - PEX
+
+on:
+  workflow_dispatch: # Manually trigger the workflow
+  # schedule:
+  #   - cron: '00 00 * * 1-5' # Schedule to run every day at 1:00 AM from Monday to Friday (aktuell deutsche Zeit - 2 Stunden)
+
+jobs:
+  manual-cypress-run-windows:
+    runs-on: windows-latest
+    if: github.event_name == 'workflow_dispatch' # run only manually
+    steps:
+      - name: Checkout 
+        uses: actions/checkout@v4
+      - name: Run Cypress tests - manually
+        uses: cypress-io/github-action@v6
+        with:
+          browser: chrome
+        env: 
+          ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+          BASE_URL: ${{ secrets.BASE_URL }}
+          STAGE_USER: ${{ secrets.STAGE_USER }}
+          STAGE_PASSW: ${{ secrets.STAGE_PASSW }}
+
+  # scheduled-cypress-run-windows:
+  #   runs-on: windows-latest
+  #   if: github.event_name == 'schedule' # run only scheduled 
+  #   steps:
+  #     - name: Checkout - scheduled
+  #       uses: actions/checkout@v4
+  #     - name: Run Cypress tests - scheduled
+  #       uses: cypress-io/github-action@v6
+  #       with:
+  #         browser: chrome
+  #       env: 
+  #         ARGOS_TOKEN: ${{ secrets.ARGOS_TOKEN }}
+  #         BASE_URL: ${{ secrets.BASE_URL }}
+  #         STAGE_USER: ${{ secrets.STAGE_USER }}
+  #         STAGE_PASSW: ${{ secrets.STAGE_PASSW }}
